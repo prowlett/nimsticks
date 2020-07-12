@@ -1,4 +1,4 @@
-# nimsticks LaTeX package
+# nimsticks: LaTeX package for drawing Nim sticks and games
 
 nimsticks is a package for LaTeX that should also work with LuaTeX and XeTeX, that draws sticks for representating games of Nim.
 

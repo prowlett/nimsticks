@@ -17,3 +17,15 @@ It does this by providing two commands:
 
 ## Licensing
 This work may be distributed and/or modified under the conditions of the [MIT license](LICENSE.txt).
+
+## Changes
+
+### [1.01] - 2020-07-12
+
+- Fixed typo in usage example in documentation.
+
+### [1.0] - 2020-07-12
+
+- First working version of package
+- Added \drawnimstick and \nimgame using lcg for the random numbers so it works across LaTeX, LuaTeX and XeTeX
+- Added documentation

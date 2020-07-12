@@ -20,7 +20,7 @@ This work may be distributed and/or modified under the conditions of the [MIT li
 
 ## Changes
 
-### [1.01] - 2020-07-12
+### [1.0.1] - 2020-07-12
 
 - Fixed typo in usage example in documentation.
 

@@ -21,9 +21,11 @@
 %\fi
 %\section{Background}
 %
-%\lstinline{nimsticks} is a package for \LaTeX{} that draws sticks for representating games of Nim. 
+%\lstinline{nimsticks} is a package for \LaTeX{} that draws sticks for representating games of multi-pile Nim. 
 %
-%The idea is that just drawing a Nim game like IIIII looks visually uninteresting because it is too regular. Instead, this uses \lstinline{tikz} to draw sticks and \lstinline{lcg} for random numbers to offset the top and bottom of each stick, so it looks less regular.
+%Nim objects could be anything, of course, but conventionally sticks or stones are used. There are various types of dot in LaTeX that might look like stones, but somehow a line of dots didn't seem satisfactory. There are various ways to draw a line (e.g. just typing IIIII), including some tally markers (e.g. in hhcount). My problem with these (call me picky) is that they are all identical lines, and a `heap' of them just looks very organised. Really, I want a set of lines that looks like someone just threw them into heaps (though probably without crossings for the avoidance of ambiguity).
+%
+%The way this works is it draws a thick vertical line in TikZ with a little wobble added so each one doesn't look extremely well-lined-up with its neighbour, achieved by adding or subtracting a small random number to the top and bottom coordinate. 
 %
 %It does this by providing two commands: 
 %\begin{itemize}
@@ -37,6 +39,8 @@
 %
 %\nimgame{5,3,4}
 %
+%This is designed to look like a 3-pile Nim game with 5 sticks in the first pile (or heap), 3 in the second and 4 in the third.
+%
 %It is likely the user will want to use \lstinline{\nimgame} and not \lstinline{\drawnimstick} directly, but the input \lstinline{\drawnimstick} will produce output like this (precise look affected by random wobble in the sticks): \drawnimstick
 %
 %\lstinline{\nimgame} will happily work with one heap, so the input \lstinline!\nimgame{7}! will produce output like this (precise look affected by random wobble in the sticks):
@@ -44,6 +48,8 @@
 %\nimgame{7}
 %
 %\section{Issues}
+%
+%There is no limit in the code to the number of piles or the number in a pile, but this code doesn't do anything to cope when line breaks start happening, and presumably there is a computational limit.
 %
 %In principle, if you add lots of piles it will just wrap onto multiple lines, though it will start to look less clear. For example, the input\\
 %\lstinline!\nimgame{1,2,3,4,5,6,7,8,9,10,9,8,7,6,5,4,3,2,1}!\\

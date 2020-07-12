@@ -15,12 +15,5 @@ It does this by providing two commands:
 - `\drawnimstick`: draws a single Nim stick with a little random wobble;
 - `\nimgame`: takes a comma-separated list of numbers and draws a line of Nim heaps holding those number of sticks.
 
-## How to use
-
-To use, run `tex nimsticks.ins` and then `pdflatex nimsticks.dtx`.
-
-Then look at the file nimsticks.pdf for more on how to use this package.
-
-## Origin
-
-This is an adapted version of something I wrote about in a blog post [LaTeX for typesetting a multi-pile Nim game](https://aperiodical.com/2018/09/latex-for-typesetting-a-multi-pile-nim-game/) at [The Aperiodical](https://aperiodical.com).
+## Licensing
+This work may be distributed and/or modified under the conditions of the [MIT license](LICENSE.txt).

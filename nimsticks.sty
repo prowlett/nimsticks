@@ -26,9 +26,10 @@
 %% SOFTWARE.
 %% 
 
-\ProvidesPackage{nimsticks}[2020/07/12 nimsticks 1.0]
+\ProvidesPackage{nimsticks}[2020/07/12 nimsticks 1.0.1]
 \RequirePackage[first=-100,last=100,seed=0]{lcg}
 \RequirePackage{tikz}
+\RequirePackage{ifthen}
 \@ifundefined{drawnimstick}{}
     {\PackageWarning{nimsticks}{Command `drawnimstick' already defined}}
 \@ifundefined{nimgame}{}
@@ -58,16 +59,16 @@
          \draw[very thick] (\topx,0) -- (\botx,0.5);%
     \end{tikzpicture}%
 }
-\newcommand{\nimgame}[1]{%
-    \begin{center}%
-        \def\listofgames{#1}%
+\newcommand{\nimgame}[2][block]{%
+    \ifthenelse{\equal{#1}{inline}}{}{\begin{center}}%
+        \def\listofgames{#2}%
         \foreach \heap in \listofgames {%
             \foreach \heapindex in {1, ..., \heap} {%
                 \drawnimstick\hspace{0.5mm}%
             }%
             \hspace{10mm}%
         }%
-    \end{center}%
+    \ifthenelse{\equal{#1}{inline}}{}{\end{center}}%
 }
 \endinput
 %%

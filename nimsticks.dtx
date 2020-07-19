@@ -35,17 +35,23 @@
 %
 %\section{Usage}
 %
-%For example, the input \lstinline!\nimgame{5,3,4}! will produce output like this (precise look affected by random wobble in the sticks):
+%N.B. The precise look of example output in this section is affected by random wobble in the sticks.
+%
+%For example, the input \lstinline!\nimgame{5,3,4}! will produce output like this:
 %
 %\nimgame{5,3,4}
 %
 %This is designed to look like a 3-pile Nim game with 5 sticks in the first pile (or heap), 3 in the second and 4 in the third.
 %
-%It is likely the user will want to use \lstinline{\nimgame} and not \lstinline{\drawnimstick} directly, but the input \lstinline{\drawnimstick} will produce output like this (precise look affected by random wobble in the sticks): \drawnimstick
-%
-%\lstinline{\nimgame} will happily work with one heap, so for example the input \lstinline!\nimgame{7}! will produce output like this (precise look affected by random wobble in the sticks):
+%\lstinline{\nimgame} will happily work with one heap, so for example the input \lstinline!\nimgame{7}! will produce output like this:
 %
 %\nimgame{7}
+%
+%The command \lstinline{\nimgame} presents the Nim game within \lstinline!\begin{center}...\end{center}!. An optional flag \lstinline{inline} can be used to produce the Nim game without the \lstinline{center} environment. For example, the command \lstinline!\nimgame[inline]{5,3,4}! will produce outline like this: \nimgame[inline]{5,3,4}
+%
+%One reason for this is that \lstinline{\nimgame} will not work in a \lstinline{standalone} document with the \lstinline{crop} option unless the \lstinline{inline} option is used.
+%
+%It is likely the user will want to use \lstinline{\nimgame} and not \lstinline{\drawnimstick} directly, but the input \lstinline{\drawnimstick} will produce output like this: \drawnimstick
 %
 %\section{Issues}
 %
@@ -64,7 +70,7 @@
 \usepackage{doc}
 \usepackage{listings}
 \lstset{basicstyle=\ttfamily\footnotesize,commentstyle=\color{white},language=TeX}
-\title{nimsticks v1.0.1}
+\title{nimsticks v1.1}
 \author{Peter Rowlett}
 \begin{document}
 \maketitle
@@ -75,9 +81,10 @@
 
 %\iffalse
 %<*nimsticks>
-\ProvidesPackage{nimsticks}[2020/07/12 nimsticks 1.0.1]
+\ProvidesPackage{nimsticks}[2020/07/19 nimsticks 1.1]
 \RequirePackage[first=-100,last=100,seed=0]{lcg}
 \RequirePackage{tikz}
+\RequirePackage{ifthen}
 \@ifundefined{drawnimstick}{}
     {\PackageWarning{nimsticks}{Command `drawnimstick' already defined}}
 \@ifundefined{nimgame}{}
@@ -107,16 +114,16 @@
          \draw[very thick] (\topx,0) -- (\botx,0.5);%
     \end{tikzpicture}%
 }
-\newcommand{\nimgame}[1]{%
-    \begin{center}%
-        \def\listofgames{#1}%
+\newcommand{\nimgame}[2][block]{%
+    \ifthenelse{\equal{#1}{inline}}{}{\begin{center}}%
+        \def\listofgames{#2}%
         \foreach \heap in \listofgames {%
             \foreach \heapindex in {1, ..., \heap} {%
                 \drawnimstick\hspace{0.5mm}%
             }%
             \hspace{10mm}%
         }%
-    \end{center}%
+    \ifthenelse{\equal{#1}{inline}}{}{\end{center}}%
 }
 %</nimsticks>
 %\fi

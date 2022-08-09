@@ -1,5 +1,5 @@
 %\iffalse meta-comment
-%Copyright (c) 2020 Peter Rowlett
+%Copyright (c) 2022 Peter Rowlett
 %
 %Permission is hereby granted, free of charge, to any person obtaining a copy
 %of this software and associated documentation files (the "Software"), to deal
@@ -47,13 +47,11 @@
 %
 %\nimgame{7}
 %
-%The command \lstinline{\nimgame} presents the Nim game within \lstinline!\begin{center}...\end{center}!. An optional flag \lstinline{inline} can be used to produce the Nim game without the \lstinline{center} environment. For example, the command \lstinline!\nimgame[inline]{5,3,4}! will produce outline like this: \nimgame[inline]{5,3,4}
-%
-%One reason for this is that \lstinline{\nimgame} will not work in a \lstinline{standalone} document with the \lstinline{crop} option unless the \lstinline{inline} option is used.
+%The command \lstinline{\nimgame} presents the Nim game within \lstinline!\centering!. An optional flag \lstinline{inline} can be used to produce the Nim game without the \lstinline{\centering}. For example, the command \lstinline!\nimgame[inline]{5,3,4}! will produce outline like this: \nimgame[inline]{5,3,4}
 %
 %It is likely the user will want to use \lstinline{\nimgame} and not \lstinline{\drawnimstick} directly, but the input \lstinline{\drawnimstick} will produce output like this: \drawnimstick
 %
-%\section{Issues}
+%\section{Warnings}
 %
 %There is no limit in the code to the number of piles or the number in a pile, but this code doesn't do anything to cope when line breaks start happening, and presumably there is a computational limit.
 %
@@ -63,6 +61,17 @@
 %\nimgame{1,2,3,4,5,6,7,8,9,10,9,8,7,6,5,4,3,2,1}
 %Similarly, if you have a lot of sticks in the same heap, it will wrap and look confusing, for example the input \lstinline!\nimgame{128}! will produce the output:
 %\nimgame{256}
+%\section{Changes to usage or output}
+%
+% (for full change log, see GitHub \verb|README.md|)
+%
+% \begin{itemize}
+%    \item v1.1: added option to make inline Nim game.
+%    \item v1.2: \begin{itemize}
+%        \item switched \verb|\begin{center}| to \verb|\centering| (because the former doesn't work in \verb|standalone| documents and the latter doesn't add vertical space);
+%        \item removed some whitespace that appeared to the right of the last heap.
+%    \end{itemize}
+%\end{itemize}
 %\iffalse
 %<*documentation>
 \documentclass{article}
@@ -70,7 +79,7 @@
 \usepackage{doc}
 \usepackage{listings}
 \lstset{basicstyle=\ttfamily\footnotesize,commentstyle=\color{white},language=TeX}
-\title{nimsticks v1.1}
+\title{nimsticks v1.2}
 \author{Peter Rowlett}
 \begin{document}
 \maketitle
@@ -81,10 +90,10 @@
 
 %\iffalse
 %<*nimsticks>
-\ProvidesPackage{nimsticks}[2020/07/19 nimsticks 1.1]
+\ProvidesPackage{nimsticks}[2022/08/09 nimsticks 1.2]
 \RequirePackage[first=-100,last=100,seed=0]{lcg}
 \RequirePackage{tikz}
-\RequirePackage{ifthen}
+\RequirePackage{etoolbox}
 \@ifundefined{drawnimstick}{}
     {\PackageWarning{nimsticks}{Command `drawnimstick' already defined}}
 \@ifundefined{nimgame}{}
@@ -115,15 +124,15 @@
     \end{tikzpicture}%
 }
 \newcommand{\nimgame}[2][block]{%
-    \ifthenelse{\equal{#1}{inline}}{}{\begin{center}}%
+    \ifstrequal{#1}{inline}{}{\bgroup\centering}%
         \def\listofgames{#2}%
         \foreach \heap in \listofgames {%
             \foreach \heapindex in {1, ..., \heap} {%
                 \drawnimstick\hspace{0.5mm}%
             }%
             \hspace{10mm}%
-        }%
-    \ifthenelse{\equal{#1}{inline}}{}{\end{center}}%
+        }\hspace{-10mm}%
+    \ifstrequal{#1}{inline}{}{\par\egroup}%
 }
 %</nimsticks>
 %\fi

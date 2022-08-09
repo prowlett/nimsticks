@@ -20,6 +20,12 @@ This work may be distributed and/or modified under the conditions of the [MIT li
 
 ## Changes
 
+### [1.2] - 2022-08-09
+
+- Switched `ifthen` to `etoolbox`;
+- Switched `\begin{center}` to `\centering` (because the former doesn't work in `standalone` documents and the latter doesn't add vertical space);
+- Removed some whitespace that appeared to the right of the last heap.
+
 ### [1.1] - 2020-07-19
 
 - Added option to create inline Nim game using `\nimgame[inline]{}`.

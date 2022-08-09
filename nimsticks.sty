@@ -26,10 +26,10 @@
 %% SOFTWARE.
 %% 
 
-\ProvidesPackage{nimsticks}[2020/07/12 nimsticks 1.0.1]
+\ProvidesPackage{nimsticks}[2022/08/09 nimsticks 1.2]
 \RequirePackage[first=-100,last=100,seed=0]{lcg}
 \RequirePackage{tikz}
-\RequirePackage{ifthen}
+\RequirePackage{etoolbox}
 \@ifundefined{drawnimstick}{}
     {\PackageWarning{nimsticks}{Command `drawnimstick' already defined}}
 \@ifundefined{nimgame}{}
@@ -60,15 +60,15 @@
     \end{tikzpicture}%
 }
 \newcommand{\nimgame}[2][block]{%
-    \ifthenelse{\equal{#1}{inline}}{}{\begin{center}}%
+    \ifstrequal{#1}{inline}{}{\bgroup\centering}%
         \def\listofgames{#2}%
         \foreach \heap in \listofgames {%
             \foreach \heapindex in {1, ..., \heap} {%
                 \drawnimstick\hspace{0.5mm}%
             }%
             \hspace{10mm}%
-        }%
-    \ifthenelse{\equal{#1}{inline}}{}{\end{center}}%
+        }\hspace{-10mm}%
+    \ifstrequal{#1}{inline}{}{\par\egroup}%
 }
 \endinput
 %%

@@ -15,6 +15,10 @@ This work may be distributed and/or modified under the conditions of the [MIT li
 
 ## Changes
 
+### [2.0.1] - 2022-08-14
+
+- Documentation tweaks
+
 ### [2.0] - 2022-08-14
 
 - Reworked to define sizes flexibly using ex so now responds to current font size, and provided scaling option.

@@ -77,38 +77,18 @@
 %
 %\lstinline|\nimgame| and \lstinline|\drawnimstick| respond to the current text size, as demonstrated below. This is because their size is defined in ex, with the default height of a stick 3.3ex (roughly twice the size of a capital letter in the current font). 
 %
-%{\tiny tiny: \nimgame[inline]{3,4,5}}
-%
-%{\scriptsize scriptsize: \nimgame[inline]{3,4,5}}
-%
-%{\footnotesize footnotesize: \nimgame[inline]{3,4,5}}
-%
-%{\small small: \nimgame[inline]{3,4,5}}
-%
-%{\normalsize normalsize: \nimgame[inline]{3,4,5}}
-%
-%{\large large: \nimgame[inline]{3,4,5}}
-%
-%{\Large Large: \nimgame[inline]{3,4,5}}
-%
-%{\LARGE LARGE: \nimgame[inline]{3,4,5}}
-%
-%{\huge huge: \nimgame[inline]{3,4,5}}
-%
-%{\Huge Huge: \nimgame[inline]{3,4,5}}
-%
-%%\begin{tabular}{cc}
-%%    \tiny tiny: & \tiny\nimgame{3,4,5}\\
-%%    \scriptsize scriptsize: & \scriptsize\nimgame{3,4,5}\\
-%%    \footnotesize footnotesize: & \footnotesize\nimgame{3,4,5}\\
-%%    \small small: & \small\nimgame{3,4,5}\\
-%%    \normalsize normalsize: & \normalsize\nimgame{3,4,5}\\
-%%    \large large: & \large\nimgame{3,4,5}\\
-%%    \Large Large: & \Large\nimgame{3,4,5}\\
-%%    \LARGE LARGE: & \LARGE\nimgame{3,4,5}\\
-%%    \huge huge: & \huge\nimgame{3,4,5}\\
-%%    \Huge Huge: & \Huge\nimgame{3,4,5}\\
-%%\end{tabular}
+%\begin{tabular}{cc}
+%    \tiny tiny: & \tiny\nimgame{3,4,5}\\
+%    \scriptsize scriptsize: & \scriptsize\nimgame{3,4,5}\\
+%    \footnotesize footnotesize: & \footnotesize\nimgame{3,4,5}\\
+%    \small small: & \small\nimgame{3,4,5}\\
+%    \normalsize normalsize: & \normalsize\nimgame{3,4,5}\\
+%    \large large: & \large\nimgame{3,4,5}\\
+%    \Large Large: & \Large\nimgame{3,4,5}\\
+%    \LARGE LARGE: & \LARGE\nimgame{3,4,5}\\
+%    \huge huge: & \huge\nimgame{3,4,5}\\
+%    \Huge Huge: & \Huge\nimgame{3,4,5}\\
+%\end{tabular}
 %
 %\subsection{Advanced size configuration}
 %
@@ -169,8 +149,8 @@
 %\definecolor{goldenrod}{rgb}{0.85, 0.65, 0.13}
 %\definecolor{indianred}{rgb}{0.8, 0.36, 0.36}
 %\renewcommand{\onenimstick}{%
-%    \draw[goldenrod,fill=goldenrod] (0,\lift) rectangle (0.14,1+\lift);
-%    \draw[indianred,fill=indianred] (0.07,1+\lift) ellipse (0.1 and 0.2);
+%    \draw[goldenrod,fill=goldenrod,rotate=\topx*40] (0,\lift) rectangle (0.14,1+\lift);
+%    \draw[indianred,fill=indianred,rotate=\topx*40] (0.07,1+\lift) ellipse (0.1 and 0.2);
 %}
 %\nimgame{3,4,5}
 %
@@ -179,8 +159,8 @@
 %    \definecolor{goldenrod}{rgb}{0.85, 0.65, 0.13}
 %    \definecolor{indianred}{rgb}{0.8, 0.36, 0.36}
 %    \renewcommand{\onenimstick}{%
-%        \draw[goldenrod,fill=goldenrod] (0,\lift) rectangle (0.14,1+\lift);
-%        \draw[indianred,fill=indianred] (0.07,1+\lift) ellipse (0.1 and 0.2);
+%        \draw[goldenrod,fill=goldenrod,rotate=\topx*40] (0,\lift) rectangle (0.14,1+\lift);
+%        \draw[indianred,fill=indianred,rotate=\topx*40] (0.07,1+\lift) ellipse (0.1 and 0.2);
 %    }
 %    
 %    \nimgame{3,4,5}
@@ -204,6 +184,26 @@
 %    
 %    \nimgame{5,4,2,3}
 %    
+%	 \item And, just to get silly:
+%
+%	 \begin{verbatim}% Colours from https://latexcolor.com/
+%\definecolor{coolblack}{rgb}{0.0, 0.18, 0.39}
+%\definecolor{arylideyellow}{rgb}{0.91, 0.84, 0.42}
+%\renewcommand{\onenimstick}{%
+%    \node[draw,coolblack,fill=arylideyellow,rotate=90+\topx*60,anchor=north,rounded
+%    corners=0.5ex] at (\topx,\botx) {\(e^{i\pi} + 1 = 0\)};
+%}
+%\nimgame{3,4,5}\bigskip\end{verbatim}
+%
+%    \definecolor{coolblack}{rgb}{0.0, 0.18, 0.39}
+%    \definecolor{arylideyellow}{rgb}{0.91, 0.84, 0.42}
+%	 \renewcommand{\onenimstick}{%
+%        \node[draw,coolblack,fill=arylideyellow,rotate=90+\topx*60,anchor=north,rounded corners=0.5ex] at (\topx,\botx) {\(e^{i\pi} + 1 = 0\)};
+%    }
+%    {\footnotesize \nimgame{3,4,5}
+%    
+%    \nimgame{5,4,2,3}}
+%
 %    \renewcommand{\onenimstick}{\draw[very thick,\nimstickcolour] (\topx,0ex) -- (\botx,\nimstickheight ex);}
 %\end{enumerate}
 %
@@ -290,6 +290,7 @@
 % (for full change log, see GitHub \lstinline|README.md|)
 %
 % \begin{itemize}
+%    \item v2.0.1: documentation tweaks.
 %    \item v2.0: rewrite, now based on ex and with options to customise size and colour, though basic usage should remain the same. More detailed documentation. Fixed a bug in v1.2 where a block display \lstinline|\nimgame| didn't start itself in a new paragraph.
 %    \item v1.2: \begin{itemize}
 %        \item switched \lstinline|\begin{center}| to \lstinline|\centering| (because the former doesn't work in \lstinline|standalone| documents and the latter doesn't add vertical space);
@@ -304,7 +305,7 @@
 \usepackage{doc}
 \usepackage{listings}
 \lstset{basicstyle=\ttfamily\footnotesize,commentstyle=\color{white},language=TeX}
-\title{nimsticks v2.0}
+\title{nimsticks v2.0.1}
 \author{Peter Rowlett}
 \begin{document}
 \maketitle
@@ -315,7 +316,7 @@
 
 %\iffalse
 %<*nimsticks>
-\ProvidesPackage{nimsticks}[2022/08/14 nimsticks 2.0]
+\ProvidesPackage{nimsticks}[2022/08/14 nimsticks 2.0.1]
 \RequirePackage[first=-100,last=100,seed=0]{lcg}
 \RequirePackage{tikz}
 \RequirePackage{etoolbox}

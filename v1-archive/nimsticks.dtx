@@ -1,0 +1,138 @@
+%\iffalse meta-comment
+%Copyright (c) 2022 Peter Rowlett
+%
+%Permission is hereby granted, free of charge, to any person obtaining a copy
+%of this software and associated documentation files (the "Software"), to deal
+%in the Software without restriction, including without limitation the rights
+%to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+%copies of the Software, and to permit persons to whom the Software is
+%furnished to do so, subject to the following conditions:
+%
+%The above copyright notice and this permission notice shall be included in all
+%copies or substantial portions of the Software.
+%
+%THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+%IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+%FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+%AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+%LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+%OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+%SOFTWARE.
+%\fi
+%\section{Background}
+%
+%\lstinline{nimsticks} is a package for \LaTeX{} that draws sticks for representating games of multi-pile Nim. 
+%
+%Nim objects could be anything, of course, but conventionally sticks or stones are used. There are various types of dot in LaTeX that might look like stones, but somehow a line of dots didn't seem satisfactory. There are various ways to draw a line (e.g. just typing IIIII), including some tally markers (e.g. in hhcount). My problem with these (call me picky) is that they are all identical lines, and a `heap' of them just looks very organised. Really, I want a set of lines that looks like someone just threw them into heaps (though probably without crossings for the avoidance of ambiguity).
+%
+%The way this works is it draws a thick vertical line in TikZ with a little wobble added so each one doesn't look extremely well-lined-up with its neighbour, achieved by adding or subtracting a small random number to the top and bottom coordinate. 
+%
+%It does this by providing two commands: 
+%\begin{itemize}
+%\item \lstinline{\drawnimstick}: draws a single Nim stick with a little random wobble;
+%\item \lstinline{\nimgame}: takes a comma-separated list of numbers and draws a line of Nim heaps holding those number of sticks.
+%\end{itemize}
+%
+%\section{Usage}
+%
+%N.B. The precise look of example output in this section is affected by random wobble in the sticks.
+%
+%For example, the input \lstinline!\nimgame{5,3,4}! will produce output like this:
+%
+%\nimgame{5,3,4}
+%
+%This is designed to look like a 3-pile Nim game with 5 sticks in the first pile (or heap), 3 in the second and 4 in the third.
+%
+%\lstinline{\nimgame} will happily work with one heap, so for example the input \lstinline!\nimgame{7}! will produce output like this:
+%
+%\nimgame{7}
+%
+%The command \lstinline{\nimgame} presents the Nim game within \lstinline!\centering!. An optional flag \lstinline{inline} can be used to produce the Nim game without the \lstinline{\centering}. For example, the command \lstinline!\nimgame[inline]{5,3,4}! will produce outline like this: \nimgame[inline]{5,3,4}
+%
+%It is likely the user will want to use \lstinline{\nimgame} and not \lstinline{\drawnimstick} directly, but the input \lstinline{\drawnimstick} will produce output like this: \drawnimstick
+%
+%\section{Warnings}
+%
+%There is no limit in the code to the number of piles or the number in a pile, but this code doesn't do anything to cope when line breaks start happening, and presumably there is a computational limit.
+%
+%In principle, if you add lots of piles it will just wrap onto multiple lines, though it will start to look less clear. For example, the input\\
+%\lstinline!\nimgame{1,2,3,4,5,6,7,8,9,10,9,8,7,6,5,4,3,2,1}!\\
+%will produce the output:
+%\nimgame{1,2,3,4,5,6,7,8,9,10,9,8,7,6,5,4,3,2,1}
+%Similarly, if you have a lot of sticks in the same heap, it will wrap and look confusing, for example the input \lstinline!\nimgame{128}! will produce the output:
+%\nimgame{256}
+%\section{Changes to usage or output}
+%
+% (for full change log, see GitHub \verb|README.md|)
+%
+% \begin{itemize}
+%    \item v1.1: added option to make inline Nim game.
+%    \item v1.2: \begin{itemize}
+%        \item switched \verb|\begin{center}| to \verb|\centering| (because the former doesn't work in \verb|standalone| documents and the latter doesn't add vertical space);
+%        \item removed some whitespace that appeared to the right of the last heap.
+%    \end{itemize}
+%\end{itemize}
+%\iffalse
+%<*documentation>
+\documentclass{article}
+\usepackage{nimsticks}
+\usepackage{doc}
+\usepackage{listings}
+\lstset{basicstyle=\ttfamily\footnotesize,commentstyle=\color{white},language=TeX}
+\title{nimsticks v1.2}
+\author{Peter Rowlett}
+\begin{document}
+\maketitle
+    \DocInput{nimsticks.dtx}
+\end{document}
+%</documentation>
+%\fi
+
+%\iffalse
+%<*nimsticks>
+\ProvidesPackage{nimsticks}[2022/08/09 nimsticks 1.2]
+\RequirePackage[first=-100,last=100,seed=0]{lcg}
+\RequirePackage{tikz}
+\RequirePackage{etoolbox}
+\@ifundefined{drawnimstick}{}
+    {\PackageWarning{nimsticks}{Command `drawnimstick' already defined}}
+\@ifundefined{nimgame}{}
+    {\PackageWarning{nimsticks}{Command `nimgame' already defined}}
+\@ifundefined{listofgames}{}
+    {\PackageWarning{nimsticks}{Command `listofgames' already defined}}
+\@ifundefined{c@topx}{}
+    {\PackageWarning{nimsticks}{Counter `topx' already defined}}
+\@ifundefined{topx}{}
+    {\PackageWarning{nimsticks}{Existing command `topx' conflicts with counter `topx'}}
+\@ifundefined{c@botx}{}
+    {\PackageWarning{nimsticks}{Counter `botx' already defined}}
+\@ifundefined{botx}{}
+    {\PackageWarning{nimsticks}{Existing command `botx' conflicts with counter `botx'}}
+\@ifundefined{c@heap}{}
+    {\PackageWarning{nimsticks}{Counter `heap' already defined}}
+\@ifundefined{heap}{}
+    {\PackageWarning{nimsticks}{Existing command `heap' conflicts with counter `heap'}}
+\@ifundefined{c@heapindex}{}
+    {\PackageWarning{nimsticks}{Counter `heapindex' already defined}}
+\@ifundefined{heapindex}{}
+    {\PackageWarning{nimsticks}{Existing command `heapindex' conflicts with counter `heapindex'}}
+\newcommand{\drawnimstick}{%
+    \rand\pgfmathsetmacro{\topx}{(\the\value{rand})/1000}%
+    \rand\pgfmathsetmacro{\botx}{(\the\value{rand})/1000}%
+    \begin{tikzpicture}%
+         \draw[very thick] (\topx,0) -- (\botx,0.5);%
+    \end{tikzpicture}%
+}
+\newcommand{\nimgame}[2][block]{%
+    \ifstrequal{#1}{inline}{}{\bgroup\centering}%
+        \def\listofgames{#2}%
+        \foreach \heap in \listofgames {%
+            \foreach \heapindex in {1, ..., \heap} {%
+                \drawnimstick\hspace{0.5mm}%
+            }%
+            \hspace{10mm}%
+        }\hspace{-10mm}%
+    \ifstrequal{#1}{inline}{}{\par\egroup}%
+}
+%</nimsticks>
+%\fi

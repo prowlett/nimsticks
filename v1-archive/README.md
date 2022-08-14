@@ -8,19 +8,17 @@ By [Peter Rowlett](https://github.com/prowlett/).
 
 Nim objects could be anything, of course, but conventionally sticks or stones are used. There are various types of dot in LaTeX that might look like stones, but somehow a line of dots didn't seem satisfactory. There are various ways to draw a line (e.g. just typing IIIII), including some tally markers (e.g. in hhcount). My problem with these (call me picky) is that they are all identical lines, and a `heap' of them just looks very organised. Really, I want a set of lines that looks like someone just threw them into heaps (though probably without crossings for the avoidance of ambiguity).
 
-The way this works is it draws a thick vertical line in TikZ with a little wobble added so each one doesn't look extremely well-lined-up with its neighbour, achieved by adding or subtracting a small random number to the top and bottom coordinate. There are various built-in options to customise the size and colour of the sticks, and flexibility to draw heaps of different objects.
+The way this works is it draws a thick vertical line in TikZ with a little wobble added so each one doesn't look extremely well-lined-up with its neighbour, achieved by adding or subtracting a small random number to the top and bottom coordinate.
+
+It does this by providing two commands:
+
+- `\drawnimstick`: draws a single Nim stick with a little random wobble;
+- `\nimgame`: takes a comma-separated list of numbers and draws a line of Nim heaps holding those number of sticks.
 
 ## Licensing
 This work may be distributed and/or modified under the conditions of the [MIT license](LICENSE.txt).
 
 ## Changes
-
-### [2.0] - 2022-08-14
-
-- Reworked to define sizes flexibly using ex so now responds to current font size, and provided scaling option.
-- Added option to customise colour.
-- Rewritten and expanded documentation, including how to fix randomisation seed and how to replace sticks by arbitrary TikZ drawing.
-- Fixed: default display for `\nimgame` should be block but it was not putting itself in a new paragraph.
 
 ### [1.2] - 2022-08-09
 

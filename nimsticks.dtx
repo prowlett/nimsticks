@@ -21,35 +21,257 @@
 %\fi
 %\section{Background}
 %
-%\lstinline{nimsticks} is a package for \LaTeX{} that draws sticks for representating games of multi-pile Nim. 
+%\lstinline|nimsticks| is a package for \LaTeX{} that draws sticks for representating games of multi-pile Nim. 
 %
 %Nim objects could be anything, of course, but conventionally sticks or stones are used. There are various types of dot in LaTeX that might look like stones, but somehow a line of dots didn't seem satisfactory. There are various ways to draw a line (e.g. just typing IIIII), including some tally markers (e.g. in hhcount). My problem with these (call me picky) is that they are all identical lines, and a `heap' of them just looks very organised. Really, I want a set of lines that looks like someone just threw them into heaps (though probably without crossings for the avoidance of ambiguity).
 %
-%The way this works is it draws a thick vertical line in TikZ with a little wobble added so each one doesn't look extremely well-lined-up with its neighbour, achieved by adding or subtracting a small random number to the top and bottom coordinate. 
+%The way this works is it draws a thick vertical line in TikZ with a little wobble added so each one doesn't look extremely well-lined-up with its neighbour, achieved by adding or subtracting a small random number to the top and bottom coordinate. There are various built-in options to customise the size and colour of the sticks, and flexibility to draw heaps of different objects.
 %
-%It does this by providing two commands: 
-%\begin{itemize}
-%\item \lstinline{\drawnimstick}: draws a single Nim stick with a little random wobble;
-%\item \lstinline{\nimgame}: takes a comma-separated list of numbers and draws a line of Nim heaps holding those number of sticks.
-%\end{itemize}
+%N.B. The precise look of example output in this document is affected by random wobble in the sticks.
 %
-%\section{Usage}
+%\section{Basic usage}
 %
-%N.B. The precise look of example output in this section is affected by random wobble in the sticks.
+%\subsection{Draw a game of multi-pile Nim}
 %
-%For example, the input \lstinline!\nimgame{5,3,4}! will produce output like this:
-%
-%\nimgame{5,3,4}
+%For example, the input \lstinline!\nimgame{5,3,4}! will produce output like this: \nimgame{5,3,4}
 %
 %This is designed to look like a 3-pile Nim game with 5 sticks in the first pile (or heap), 3 in the second and 4 in the third.
 %
-%\lstinline{\nimgame} will happily work with one heap, so for example the input \lstinline!\nimgame{7}! will produce output like this:
+%\lstinline|\nimgame| will happily work with one heap, so for example the input \lstinline!\nimgame{7}! will produce output like this: \nimgame{7}
 %
-%\nimgame{7}
+%The command \lstinline|\nimgame| presents the Nim game as its own paragraph with \lstinline!\centering!. An optional flag \lstinline|inline| can be used to produce the Nim game inline without the \lstinline|\centering|. For example, the command \lstinline!\nimgame[inline]{5,3,4}! will produce outline like this: \nimgame[inline]{5,3,4}
 %
-%The command \lstinline{\nimgame} presents the Nim game within \lstinline!\centering!. An optional flag \lstinline{inline} can be used to produce the Nim game without the \lstinline{\centering}. For example, the command \lstinline!\nimgame[inline]{5,3,4}! will produce outline like this: \nimgame[inline]{5,3,4}
+%\subsection{Draw a single Nim stick}
 %
-%It is likely the user will want to use \lstinline{\nimgame} and not \lstinline{\drawnimstick} directly, but the input \lstinline{\drawnimstick} will produce output like this: \drawnimstick
+%It is likely the user will want to use \lstinline|\nimgame| and not \lstinline|\drawnimstick| directly, but the input \lstinline|\drawnimstick| will produce output like this: \reinitrand[first=-100,last=100,seed=256]\drawnimstick 
+%
+%\section{Customisation}
+%
+%\subsection{Colour}
+%
+%A command \lstinline|\setnimstickcolour{colour}| is used to set the colour of the sticks, by default black. The input \lstinline|colour| can be any named colour defined in the document.
+%
+%\begin{verbatim}\nimgame{3,4,5}
+%
+%\setnimstickcolour{blue}\nimgame{3,4,5}
+%
+%\setnimstickcolour{magenta}\nimgame{3,4,5}
+%
+%\definecolor{lightcornflowerblue}{rgb}{0.6, 0.81, 0.93} % from https://latexcolor.com/
+%\setnimstickcolour{lightcornflowerblue}\nimgame{3,4,5}\end{verbatim}
+%
+%\nimgame{3,4,5}
+%
+%\setnimstickcolour{blue}\nimgame{3,4,5}
+%
+%\setnimstickcolour{magenta}\nimgame{3,4,5}
+%
+%\definecolor{lightcornflowerblue}{rgb}{0.6, 0.81, 0.93}
+%\setnimstickcolour{lightcornflowerblue}\nimgame{3,4,5}
+%
+%\setnimstickcolour{black}
+%
+%\section{Size}
+%
+%\subsection{Basic size configuration}
+%
+%\lstinline|\nimgame| and \lstinline|\drawnimstick| respond to the current text size, as demonstrated below. This is because their size is defined in ex, with the default height of a stick 3.3ex (roughly twice the size of a capital letter in the current font). 
+%
+%{\tiny tiny: \nimgame[inline]{3,4,5}}
+%
+%{\scriptsize scriptsize: \nimgame[inline]{3,4,5}}
+%
+%{\footnotesize footnotesize: \nimgame[inline]{3,4,5}}
+%
+%{\small small: \nimgame[inline]{3,4,5}}
+%
+%{\normalsize normalsize: \nimgame[inline]{3,4,5}}
+%
+%{\large large: \nimgame[inline]{3,4,5}}
+%
+%{\Large Large: \nimgame[inline]{3,4,5}}
+%
+%{\LARGE LARGE: \nimgame[inline]{3,4,5}}
+%
+%{\huge huge: \nimgame[inline]{3,4,5}}
+%
+%{\Huge Huge: \nimgame[inline]{3,4,5}}
+%
+%%\begin{tabular}{cc}
+%%    \tiny tiny: & \tiny\nimgame{3,4,5}\\
+%%    \scriptsize scriptsize: & \scriptsize\nimgame{3,4,5}\\
+%%    \footnotesize footnotesize: & \footnotesize\nimgame{3,4,5}\\
+%%    \small small: & \small\nimgame{3,4,5}\\
+%%    \normalsize normalsize: & \normalsize\nimgame{3,4,5}\\
+%%    \large large: & \large\nimgame{3,4,5}\\
+%%    \Large Large: & \Large\nimgame{3,4,5}\\
+%%    \LARGE LARGE: & \LARGE\nimgame{3,4,5}\\
+%%    \huge huge: & \huge\nimgame{3,4,5}\\
+%%    \Huge Huge: & \Huge\nimgame{3,4,5}\\
+%%\end{tabular}
+%
+%\subsection{Advanced size configuration}
+%
+%The size can be further customised by a command \lstinline|\setnimscale{num}|. This controls the height of the sticks, their thickness, the gaps between sticks, the gaps between heaps and the size of the wobble. 
+%
+%Usage is like \lstinline|\setnimscale{2}\nimgame{3,4,5}|
+%
+%For example:
+%
+%\begin{tabular}{cc}
+%    \textbf{Nim scale} & \lstinline|\normalsize| \textbf{game}\\
+%    0.5: & \setnimscale{0.5}\nimgame{3,4,5}\\
+%    0.675: & \setnimscale{0.675}\nimgame{3,4,5}\\
+%    1: & \setnimscale{1}\nimgame{3,4,5}\\
+%    1.5: & \setnimscale{1.5}\nimgame{3,4,5}\\
+%    2: & \setnimscale{2}\nimgame{3,4,5}\\
+%    4: & \setnimscale{4}\nimgame{3,4,5}\\
+%\end{tabular}
+%\setnimscale{1}
+%
+%
+%\section{Advanced use}
+%
+%\subsection{Changing the look of the Nim sticks/stones/etc.}
+%
+%There is a command \lstinline|\onenimstick| that includes only the TikZ code for drawing a single Nim stick. This can be redefined to draw different objects as Nim sticks using in principle arbitrary TikZ code. 
+%
+%\lstinline|\onenimstick| is called from within a \lstinline|tikzpicture| environment. 
+%
+%You have three randomisation parameters available to you: \begin{itemize}
+%    \item \lstinline|\topx| and \lstinline|\botx|: small random numbers which are in the range \(-0.1\) to \(0.1\) (for default scale \lstinline|\normalsize| heaps).
+%    \item \lstinline|\lift|: small random number which is in the range \(0\) to \(0.2\) (for default scale \lstinline|\normalsize| heaps).
+%\end{itemize}
+%
+%\subsubsection{Examples}
+%
+%\begin{enumerate}
+%    \item Here we draw each stick as a little circle (to look like stones), with a little vertical \lstinline|\lift| to make them sit irregularly. 
+%
+%    \begin{verbatim}\renewcommand{\onenimstick}{%
+%    \node[draw,black,fill=gray,circle] at (0,\lift) {};
+%}
+%\nimgame{3,4,5}
+%
+%\nimgame{5,4,2,3}\end{verbatim}
+%
+%    \renewcommand{\onenimstick}{%
+%        \node[draw,black,fill=gray,circle] at (0,\lift) {};
+%    }
+%    
+%    \nimgame{3,4,5}
+%    
+%    \nimgame{5,4,2,3}
+%    
+%    \item Here we draw each stick as a little matchstick, with a little vertical \lstinline|\lift| to make them sit irregularly. 
+%    
+%    \begin{verbatim}% Colours from https://latexcolor.com/
+%\definecolor{goldenrod}{rgb}{0.85, 0.65, 0.13}
+%\definecolor{indianred}{rgb}{0.8, 0.36, 0.36}
+%\renewcommand{\onenimstick}{%
+%    \draw[goldenrod,fill=goldenrod] (0,\lift) rectangle (0.14,1+\lift);
+%    \draw[indianred,fill=indianred] (0.07,1+\lift) ellipse (0.1 and 0.2);
+%}
+%\nimgame{3,4,5}
+%
+%\nimgame{5,4,2,3}\end{verbatim}
+%    
+%    \definecolor{goldenrod}{rgb}{0.85, 0.65, 0.13}
+%    \definecolor{indianred}{rgb}{0.8, 0.36, 0.36}
+%    \renewcommand{\onenimstick}{%
+%        \draw[goldenrod,fill=goldenrod] (0,\lift) rectangle (0.14,1+\lift);
+%        \draw[indianred,fill=indianred] (0.07,1+\lift) ellipse (0.1 and 0.2);
+%    }
+%    
+%    \nimgame{3,4,5}
+%    
+%    \nimgame{5,4,2,3}
+%    
+%    \item To demonstrate arbitrary drawing, here each item in the Nim heap is a little green rectangle, with size randomised using \lstinline|\topx| and  \lstinline|\botx|, with a little vertical \lstinline|\lift| to make them sit irregularly. 
+%    
+%    \begin{verbatim}\renewcommand{\onenimstick}{%
+%    \draw[very thick,draw,fill=green] (0,\lift) rectangle (\topx+0.5,\botx+1+\lift);
+%}
+%\nimgame{3,4,5}
+%
+%\nimgame{5,4,2,3}\end{verbatim}
+%    
+%    \renewcommand{\onenimstick}{%
+%        \draw[very thick,draw,fill=green] (0,\lift) rectangle (\topx+0.5,\botx+1+\lift);
+%    }
+%    
+%    \nimgame{3,4,5}
+%    
+%    \nimgame{5,4,2,3}
+%    
+%    \renewcommand{\onenimstick}{\draw[very thick,\nimstickcolour] (\topx,0ex) -- (\botx,\nimstickheight ex);}
+%\end{enumerate}
+%
+%\subsection{Creating the same randomisation twice}
+%
+%The randomisation is done with \lstinline|lcg| and you can set the seed using \lstinline|\reinitrand| from that package. The seed is supposed to be a number from \(1\) to \(2^{31} - 1\), otherwise the package will use a combination of the time, page number and line number to make the seed. So if you reset the randomisation to the same seed before running \lstinline|\drawnimstick| or \lstinline|\nimgame| you'll get the same look to the sticks.
+%
+%\subsubsection{Examples}
+%
+%\begin{enumerate}
+%    \item Here we generate the same Nim pile twice with exact reproduction of the randomisation. The first pair of Nim games (without \lstinline|\reinitrand|) appear different; the second pair of Nim games appear identical because \lstinline|\reinitrand[first=-100,last=100,seed=1]| is used to reset the randomisation to the same point before each is drawn. Different seeds can be used if there are multiple sets of Nim games that require consistent looks.
+%    
+%    \begin{verbatim}\nimgame{3,4,5}
+%
+%\nimgame{3,4,5}
+%
+%\hrule
+%
+%\reinitrand[first=-100,last=100,seed=1]
+%\nimgame{3,4,5}
+%
+%\reinitrand[first=-100,last=100,seed=1]
+%\nimgame{3,4,5}\end{verbatim}
+%
+%    \nimgame{3,4,5}
+%    
+%    \nimgame{3,4,5}
+%    
+%    \hrule
+%
+%    \reinitrand[first=-100,last=100,seed=1]
+%    \nimgame{3,4,5}
+%    
+%    \reinitrand[first=-100,last=100,seed=1]
+%    \nimgame{3,4,5}
+%
+%    \item Here we use nimsticks within Beamer with a reveal slide using \lstinline|\only|. On the first slide a Nim game is produced and when the slide is progressed to reveal ``Text'' the Nim sticks all move. On the second slide the Nim sticks do not move when ``Text'' is revealed.
+%    
+%    \begin{verbatim}\documentclass{beamer}
+%\usepackage{nimsticks}
+%\begin{document}    
+%\begin{frame}
+%    \nimgame{2,3,4} \only<2>{Text}
+%\end{frame}  
+%\begin{frame}
+%    \reinitrand[first=-100,last=100,seed=123]\nimgame{2,3,4} \only<2>{Text}
+%\end{frame}
+%\end{document}\end{verbatim}
+%    
+%	\item Here two pairs of Nim games are reproduced. Games 1 and 3 are identical using \lstinline|seed=1|, and games 2 and 4 are identical using \lstinline|seed=2|.
+%
+%    \begin{verbatim}Game 1: \reinitrand[first=-100,last=100,seed=1]\nimgame{5,8,1,4}
+%
+%Game 2: \reinitrand[first=-100,last=100,seed=2]\nimgame{2,3}
+%
+%Game 3: \reinitrand[first=-100,last=100,seed=1]\nimgame{5,8,1,4}
+%
+%Game 4: \reinitrand[first=-100,last=100,seed=2]\nimgame{2,3}\end{verbatim}
+%
+%	Game 1: \reinitrand[first=-100,last=100,seed=1]\nimgame{5,8,1,4}
+%
+%	Game 2: \reinitrand[first=-100,last=100,seed=2]\nimgame{2,3}
+%
+%	Game 3: \reinitrand[first=-100,last=100,seed=1]\nimgame{5,8,1,4}
+%
+%	Game 4: \reinitrand[first=-100,last=100,seed=2]\nimgame{2,3}
+%
+%\end{enumerate}
 %
 %\section{Warnings}
 %
@@ -61,16 +283,19 @@
 %\nimgame{1,2,3,4,5,6,7,8,9,10,9,8,7,6,5,4,3,2,1}
 %Similarly, if you have a lot of sticks in the same heap, it will wrap and look confusing, for example the input \lstinline!\nimgame{128}! will produce the output:
 %\nimgame{256}
+%
+%
 %\section{Changes to usage or output}
 %
-% (for full change log, see GitHub \verb|README.md|)
+% (for full change log, see GitHub \lstinline|README.md|)
 %
 % \begin{itemize}
-%    \item v1.1: added option to make inline Nim game.
+%    \item v2.0: rewrite, now based on ex and with options to customise size and colour, though basic usage should remain the same. More detailed documentation. Fixed a bug in v1.2 where a block display \lstinline|\nimgame| didn't start itself in a new paragraph.
 %    \item v1.2: \begin{itemize}
-%        \item switched \verb|\begin{center}| to \verb|\centering| (because the former doesn't work in \verb|standalone| documents and the latter doesn't add vertical space);
+%        \item switched \lstinline|\begin{center}| to \lstinline|\centering| (because the former doesn't work in \lstinline|standalone| documents and the latter doesn't add vertical space);
 %        \item removed some whitespace that appeared to the right of the last heap.
 %    \end{itemize}
+%    \item v1.1: added option to make inline Nim game.
 %\end{itemize}
 %\iffalse
 %<*documentation>
@@ -79,7 +304,7 @@
 \usepackage{doc}
 \usepackage{listings}
 \lstset{basicstyle=\ttfamily\footnotesize,commentstyle=\color{white},language=TeX}
-\title{nimsticks v1.2}
+\title{nimsticks v2.0}
 \author{Peter Rowlett}
 \begin{document}
 \maketitle
@@ -90,7 +315,7 @@
 
 %\iffalse
 %<*nimsticks>
-\ProvidesPackage{nimsticks}[2022/08/09 nimsticks 1.2]
+\ProvidesPackage{nimsticks}[2022/08/14 nimsticks 2.0]
 \RequirePackage[first=-100,last=100,seed=0]{lcg}
 \RequirePackage{tikz}
 \RequirePackage{etoolbox}
@@ -100,38 +325,83 @@
     {\PackageWarning{nimsticks}{Command `nimgame' already defined}}
 \@ifundefined{listofgames}{}
     {\PackageWarning{nimsticks}{Command `listofgames' already defined}}
-\@ifundefined{c@topx}{}
-    {\PackageWarning{nimsticks}{Counter `topx' already defined}}
+\@ifundefined{nimstickcolour}{}
+    {\PackageWarning{nimsticks}{Command `nimstickcolour' already defined}}
+\@ifundefined{setnimstickcolour}{}
+    {\PackageWarning{nimsticks}{Command `setnimstickcolour' already defined}}
+\@ifundefined{nimstickheight}{}
+    {\PackageWarning{nimsticks}{Command `nimstickheight' already defined}}
+\@ifundefined{nimstickthickness}{}
+    {\PackageWarning{nimsticks}{Command `nimstickthickness' already defined}}
+\@ifundefined{nimstickgap}{}
+    {\PackageWarning{nimsticks}{Command `nimstickgap' already defined}}
+\@ifundefined{nimheapgap}{}
+    {\PackageWarning{nimsticks}{Command `nimheapgap' already defined}}
+\@ifundefined{nimheapwobble}{}
+    {\PackageWarning{nimsticks}{Command `nimheapwobble' already defined}}
+\@ifundefined{nimheaplift}{}
+    {\PackageWarning{nimsticks}{Command `nimheaplift' already defined}}
+\@ifundefined{nimrandrange}{}
+    {\PackageWarning{nimsticks}{Command `nimrandrange' already defined}}
+\@ifundefined{setnimscale}{}
+    {\PackageWarning{nimsticks}{Command `setnimscale' already defined}}
+\@ifundefined{onenimstick}{}
+    {\PackageWarning{nimsticks}{Command `onenimstick' already defined}}
 \@ifundefined{topx}{}
-    {\PackageWarning{nimsticks}{Existing command `topx' conflicts with counter `topx'}}
-\@ifundefined{c@botx}{}
-    {\PackageWarning{nimsticks}{Counter `botx' already defined}}
+    {\PackageWarning{nimsticks}{Command `topx' already defined}}
 \@ifundefined{botx}{}
-    {\PackageWarning{nimsticks}{Existing command `botx' conflicts with counter `botx'}}
-\@ifundefined{c@heap}{}
-    {\PackageWarning{nimsticks}{Counter `heap' already defined}}
+    {\PackageWarning{nimsticks}{Command `botx' already defined}}
+\@ifundefined{lift}{}
+    {\PackageWarning{nimsticks}{Command `lift' already defined}}
 \@ifundefined{heap}{}
-    {\PackageWarning{nimsticks}{Existing command `heap' conflicts with counter `heap'}}
-\@ifundefined{c@heapindex}{}
-    {\PackageWarning{nimsticks}{Counter `heapindex' already defined}}
+    {\PackageWarning{nimsticks}{Command `heap' already defined}}
 \@ifundefined{heapindex}{}
-    {\PackageWarning{nimsticks}{Existing command `heapindex' conflicts with counter `heapindex'}}
+    {\PackageWarning{nimsticks}{Command `heapindex' already defined}}
+
+% Colour
+\newcommand{\nimstickcolour}{black}
+\newcommand{\setnimstickcolour}[1]{%
+    \renewcommand{\nimstickcolour}{#1}
+}
+
+% Size
+\newcommand{\nimstickheight}{3.3} % in ex
+\newcommand{\nimstickthickness}{0.3} % in ex
+\newcommand{\nimstickgap}{0.3} % in ex
+\newcommand{\nimheapgap}{5} % in ex
+\newcommand{\nimheapwobble}{0.001} % in ex
+\newcommand{\nimheaplift}{0.002} % in ex
+\newcommand{\nimrandrange}{100}
+\newcommand{\setnimscale}[1]{%
+    \pgfmathsetmacro{\nimstickheight}{3.3*#1}%
+    \pgfmathsetmacro{\nimstickthickness}{0.3*#1}%
+    \pgfmathsetmacro{\nimstickgap}{0.3*#1^(0.5)}%
+    \pgfmathsetmacro{\nimheapgap}{5*#1^(0.25)}%
+    \pgfmathsetmacro{\nimheapwobble}{0.001*#1^(0.25)}%
+    \pgfmathsetmacro{\nimheaplift}{0.002*#1}%
+    \pgfmathtruncatemacro{\nimrandrange}{100*#1}\reinitrand[first=-\nimrandrange,last=\nimrandrange,seed=0]%
+}
+
+% drawing a single Nim stick
+\newcommand{\onenimstick}{\draw[line width=\nimstickthickness ex,\nimstickcolour] (\topx,0ex) -- (\botx,\nimstickheight ex);}
 \newcommand{\drawnimstick}{%
-    \rand\pgfmathsetmacro{\topx}{(\the\value{rand})/1000}%
-    \rand\pgfmathsetmacro{\botx}{(\the\value{rand})/1000}%
-    \begin{tikzpicture}%
-         \draw[very thick] (\topx,0) -- (\botx,0.5);%
+    \rand\pgfmathsetmacro{\topx}{(\the\value{rand})*\nimheapwobble}%
+    \rand\pgfmathsetmacro{\botx}{(\the\value{rand})*\nimheapwobble}%
+    \rand\pgfmathsetmacro{\lift}{(\nimrandrange+\the\value{rand})*\nimheaplift}%
+    \begin{tikzpicture}
+    \node[inner sep=0] at (0,0) {}; % to anchor the diagram so any random movement isn't recentred
+    \onenimstick
     \end{tikzpicture}%
 }
 \newcommand{\nimgame}[2][block]{%
-    \ifstrequal{#1}{inline}{}{\bgroup\centering}%
-        \def\listofgames{#2}%
-        \foreach \heap in \listofgames {%
-            \foreach \heapindex in {1, ..., \heap} {%
-                \drawnimstick\hspace{0.5mm}%
-            }%
-            \hspace{10mm}%
-        }\hspace{-10mm}%
+    \ifstrequal{#1}{inline}{}{\par\bgroup\centering}%
+    \def\listofgames{#2}%
+    \foreach \heap in \listofgames {%
+        \foreach \heapindex in {1, ..., \heap} {%
+            \drawnimstick\hspace{\nimstickgap ex}%
+        }%
+        \hspace{\nimheapgap ex}%
+    }\hspace{-\nimheapgap ex}%
     \ifstrequal{#1}{inline}{}{\par\egroup}%
 }
 %</nimsticks>
